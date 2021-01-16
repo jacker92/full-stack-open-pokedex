@@ -12,8 +12,8 @@ jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+        uses: actions/checkout@v2
+        uses: actions/setup-node@v1
         with:
           node-version: '12.x'
       - name: npm install
@@ -25,14 +25,13 @@ jobs:
       - name: test
         run: npm run test
       - name: e2e tests
-      - uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v2
         with:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-
         if: ${{ github.event_name == 'push' }}
-      - uses: akhileshns/heroku-deploy@v3.8.9
+        uses: akhileshns/heroku-deploy@v3.8.9
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'pokedex-test-1422'

@@ -32,3 +32,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'pokedex-test-1422'
           heroku_email: 'lahtinen.jaakko@gmail.com'
+          healthcheck: "https://pokedex-test-1422.herokuapp.com/health"
+          checkstring: "ok"

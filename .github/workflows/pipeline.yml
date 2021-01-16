@@ -53,6 +53,8 @@ jobs:
       - name: Conditions event name is push
         run: echo github.event_name == 'push'
       - name: Commit messages contains skip
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo ${{ contains(join(COMMIT_MESSAGES), '#skip') }}
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.33.0

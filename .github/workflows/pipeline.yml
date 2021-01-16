@@ -30,24 +30,7 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-      - name: heroku deployment 
-        uses: akhileshns/heroku-deploy@v3.8.9
-        if: ${{ github.event_name == 'push' }}
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: 'pokedex-test-1422'
-          heroku_email: 'lahtinen.jaakko@gmail.com'
-          healthcheck: "https://pokedex-test-1422.herokuapp.com/health"
-          checkstring: "ok"
-          rollbackonhealthcheckfailed: true
-      - uses: actions/checkout@v2
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.33.0
-        if: ${{ github.event_name == 'push' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-  bump_version:
+  deploy:
     needs: simple_deployment_pipeline
     runs-on: ubuntu-18.04
     steps:
@@ -64,3 +47,25 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: Check commit messages for skip tag
+        run: echo "Skipping!"
+        if: github.event_name == 'push' && contains(join(COMMIT_MESSAGES), '#skip')
+      - name: Conditions event name is push
+        run: echo github.event_name == 'push'
+      - name: Commit messages contains skip
+        run: echo contains(join(COMMIT_MESSAGES), '#skip')
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.33.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+      - name: heroku deployment 
+        uses: akhileshns/heroku-deploy@v3.8.9
+        if: ${{ github.event_name == 'push' }}
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'pokedex-test-1422'
+          heroku_email: 'lahtinen.jaakko@gmail.com'
+          healthcheck: "https://pokedex-test-1422.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true

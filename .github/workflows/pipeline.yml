@@ -34,3 +34,4 @@ jobs:
           heroku_email: 'lahtinen.jaakko@gmail.com'
           healthcheck: "https://pokedex-test-1422.herokuapp.com/health"
           checkstring: "ok"
+          rollbackonhealthcheckfailed: true

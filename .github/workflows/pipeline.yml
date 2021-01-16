@@ -24,12 +24,12 @@ jobs:
         run: npm run build
       - name: build has failed
         uses: 8398a7/action-slack@v3
+        if: failure()
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: failure()
       - name: test
         run: npm run test
       - name: e2e tests 

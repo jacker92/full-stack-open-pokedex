@@ -48,8 +48,6 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
-      - name: Check commit messages for skip tag
-        run: echo "Skipping!"
       - name: Conditions event name is push
         run: echo ${{github.event_name == 'push'}}
       - name: Commit messages contains skip

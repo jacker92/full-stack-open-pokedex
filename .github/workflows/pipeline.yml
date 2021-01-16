@@ -51,11 +51,11 @@ jobs:
         run: echo "$COMMIT_MESSAGES"
       - name: Check commit messages for skip tag
         run: echo "Skipping!"
-        if: github.event_name == 'push' && contains(join(COMMIT_MESSAGES), '#skip')
+        if: github.event_name == 'push' && contains(join($COMMIT_MESSAGES), '#skip')
       - name: Conditions event name is push
         run: echo github.event_name == 'push'
       - name: Commit messages contains skip
-        run: echo contains(join(COMMIT_MESSAGES), '#skip')
+        run: echo contains(join($COMMIT_MESSAGES), '#skip')
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.33.0
         env:

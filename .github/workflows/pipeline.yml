@@ -31,6 +31,8 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
   deploy:
+    env:
+       COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
     needs: simple_deployment_pipeline
     runs-on: ubuntu-18.04
     steps:
